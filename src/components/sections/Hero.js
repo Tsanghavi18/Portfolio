@@ -4,12 +4,14 @@ import Button from "@/components/ui/Button";
 import SocialLinks from "@/components/ui/SocialLinks";
 import { LogoMark } from "@/components/ui/Logo";
 import { profile } from "@/data/portfolio";
+import { cn } from "@/lib/utils";
 
 const ease = [0.22, 1, 0.36, 1];
 const icons = { Briefcase, Atom, MonitorSmartphone };
 
-// Headline is revealed word by word from behind a mask
+// Headline words and accent highlights for luxury gradient styling
 const headlineWords = profile.headline.split(" ");
+const accentWords = (profile.headlineAccent || "").split(" ");
 
 // Floating stack chips around the logo card
 const chips = [
@@ -21,7 +23,7 @@ const chips = [
 
 const facts = [
   ["Role", "Full Stack Developer"],
-  ["Focus", "Frontend development"],
+  ["Focus", "Frontend Development"],
   ["Company", "AzzipTech"],
 ];
 
@@ -46,23 +48,40 @@ export default function Hero() {
             {profile.availability}
           </motion.p>
 
-          <h1 className="mt-6 text-[clamp(2rem,4vw,3.6rem)] font-bold leading-[1.06] tracking-[-0.035em]">
-            <span className="sr-only">{profile.headline}</span>
-            <span aria-hidden="true">
-              {headlineWords.map((word, i) => (
-                <span key={i} className="-mb-[0.12em] mr-[0.24em] inline-block overflow-hidden pb-[0.12em] align-bottom">
-                  <motion.span
-                    className="inline-block"
-                    initial={{ y: "110%" }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.75, delay: 0.45 + i * 0.07, ease }}
-                  >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
-            </span>
-          </h1>
+          <div className="relative mt-6">
+            {/* Ambient luxury aura behind the headline */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -left-6 -top-8 h-36 w-80 rounded-full bg-accent/15 blur-3xl"
+            />
+            <h1 className="relative text-[clamp(2.1rem,4.2vw,3.8rem)] font-bold leading-[1.08] tracking-[-0.035em]">
+              <span className="sr-only">{profile.headline}</span>
+              <span aria-hidden="true">
+                {headlineWords.map((word, i) => {
+                  const isAccent = accentWords.includes(word);
+                  return (
+                    <span
+                      key={i}
+                      className="-mb-[0.12em] mr-[0.24em] inline-block overflow-hidden pb-[0.12em] align-bottom"
+                    >
+                      <motion.span
+                        className={cn(
+                          "inline-block",
+                          isAccent &&
+                          "bg-gradient-to-r from-accent via-[#ffe3a1] to-accent-2 bg-clip-text text-transparent drop-shadow-[0_2px_22px_rgba(245,181,61,0.28)]"
+                        )}
+                        initial={{ y: "110%" }}
+                        animate={{ y: 0 }}
+                        transition={{ duration: 0.75, delay: 0.45 + i * 0.07, ease }}
+                      >
+                        {word}
+                      </motion.span>
+                    </span>
+                  );
+                })}
+              </span>
+            </h1>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}

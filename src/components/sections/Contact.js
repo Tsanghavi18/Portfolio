@@ -216,51 +216,80 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <motion.button
-                  type="submit"
-                  disabled={state === "sending"}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={cn(
-                    "relative inline-flex min-h-13 w-full items-center justify-center gap-2 overflow-hidden rounded-xl px-7 py-3.5 font-semibold text-on-accent transition-shadow sm:w-auto",
-                    "bg-gradient-to-r from-accent to-accent-2 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/35",
-                    "before:absolute before:inset-0 before:-translate-x-full before:skew-x-12 before:bg-white/30 before:transition-transform before:duration-700 hover:before:translate-x-full",
-                    "disabled:opacity-80"
-                  )}
-                >
-                  <span className="relative z-10 inline-flex items-center gap-2">
-                    {state === "sending" ? (
-                      <><LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> Sending...</>
-                    ) : state === "done" ? (
-                      <><Check size={18} aria-hidden="true" /> Message sent</>
-                    ) : (
-                      <>{contact.button} <Send size={18} aria-hidden="true" /></>
-                    )}
-                  </span>
-                </motion.button>
-
-                <div aria-live="polite" className="min-h-6 text-sm">
-                  <AnimatePresence mode="wait">
-                    {note && (
-                      <motion.p
-                        key={note}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className={cn("flex gap-2", state === "error" ? "text-accent-strong" : "text-ink")}
+              <AnimatePresence mode="wait">
+                {state === "done" ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="mt-6 rounded-2xl border border-accent/40 bg-accent-soft p-5 text-ink shadow-lg shadow-accent/10"
+                  >
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex items-center gap-3.5">
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 text-on-accent shadow-md shadow-accent/25">
+                          <Check size={20} strokeWidth={2.5} aria-hidden="true" />
+                        </span>
+                        <div>
+                          <p className="font-semibold text-ink text-base">Message Sent Successfully!</p>
+                          <p className="text-xs sm:text-sm text-muted">
+                            A confirmation email has been sent to you. I will get back to you soon.
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setState("idle");
+                          setNote("");
+                        }}
+                        className="glass shrink-0 self-start rounded-xl px-4 py-2 text-xs font-semibold text-ink transition-colors hover:border-accent hover:text-accent-strong sm:self-auto"
                       >
-                        {state === "error" ? (
-                          <Info size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+                        Send another
+                      </button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <motion.button
+                      type="submit"
+                      disabled={state === "sending"}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.97 }}
+                      className={cn(
+                        "relative inline-flex min-h-13 w-full shrink-0 whitespace-nowrap items-center justify-center gap-2 overflow-hidden rounded-xl px-8 py-3.5 font-semibold text-on-accent transition-shadow sm:w-auto",
+                        "bg-gradient-to-r from-accent to-accent-2 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/35",
+                        "before:absolute before:inset-0 before:-translate-x-full before:skew-x-12 before:bg-white/30 before:transition-transform before:duration-700 hover:before:translate-x-full",
+                        "disabled:opacity-80"
+                      )}
+                    >
+                      <span className="relative z-10 inline-flex items-center gap-2 whitespace-nowrap">
+                        {state === "sending" ? (
+                          <>
+                            <LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> Sending...
+                          </>
                         ) : (
-                          <Check size={18} className="mt-0.5 shrink-0 text-accent" aria-hidden="true" />
+                          <>
+                            {contact.button} <Send size={18} aria-hidden="true" />
+                          </>
                         )}
-                        {note}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
+                      </span>
+                    </motion.button>
+
+                    <div aria-live="polite" className="min-h-6 text-sm">
+                      {note && state === "error" && (
+                        <motion.p
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex items-center gap-2 text-accent-strong"
+                        >
+                          <Info size={18} className="shrink-0" aria-hidden="true" />
+                          {note}
+                        </motion.p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </AnimatePresence>
             </form>
 
             <div className="relative mt-8 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">

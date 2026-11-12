@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Tarun Sanghavi — Developer Portfolio 🚀
 
 A modern, responsive, and performance-focused personal portfolio website built with **Next.js**, **React 19**, **Tailwind CSS v4**, and **Framer Motion**.
@@ -131,7 +130,5 @@ You can update:
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-=======
 # Portfolio
 Modern, responsive personal developer portfolio built with Next.js, React 19, Tailwind CSS v4, and Framer Motion.
->>>>>>> 73f9fdab78fe5855a38b5d20f09fe4a8247125ef

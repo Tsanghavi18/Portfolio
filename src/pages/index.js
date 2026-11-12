@@ -74,7 +74,7 @@ export default function Home() {
         <Projects />
         <Experience />
         <Section id="education" index="05" effect="slide-right">
-          <SectionHeading caption="Learning" title="Education & certifications." />
+          <SectionHeading caption="Learning" title="Education & Certifications." />
           <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
             <Education />
             <Certifications />

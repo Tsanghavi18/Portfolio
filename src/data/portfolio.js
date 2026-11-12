@@ -9,7 +9,8 @@ export const profile = {
   shortName: "Tarun",
   role: "Full Stack Developer",
   availability: "Available for Part-Time Roles & Freelance Projects",
-  headline: "Building Modern, Responsive & User-Focused Web Experiences.",
+  headline: "Crafting Scalable, High-Impact Web Experiences.",
+  headlineAccent: "High-Impact Web Experiences.",
   intro: [
     "Hi, I'm Tarun Sanghavi, a Full Stack Developer passionate about building modern web applications with clean interfaces, reusable components and reliable functionality.",
     "I specialize in frontend development using React.js, Next.js and JavaScript, with experience in API integration, backend development and database technologies.",
@@ -212,11 +213,11 @@ export const experience = [
 // No education / certification details were provided yet: these are placeholders.
 export const education = [
   {
-    institution: "Gujarat Technological University (GTU)",
+    institution: "Shantilal Shah Engineering College, Bhavnagar",
     degree: "Bachelor of Engineering (BE)",
     field: "Information Technology",
     duration: "Aug 2021 - Jul 2025",
-    details: "",
+    details: "Gujarat Technological University (GTU)",
   },
 ];
 
