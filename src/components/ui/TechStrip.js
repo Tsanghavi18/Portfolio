@@ -5,7 +5,7 @@ import { useInView } from "framer-motion";
 // pauses on hover, and stays still for reduced-motion visitors.
 const items = [
   "React.js", "Next.js", "JavaScript", "Tailwind CSS", "Node.js", "MySQL",
-  "MongoDB", "Git", "GitHub", "Postman", "Jira",
+  "MongoDB", "Git", "GitHub", "Postman", "Jira", "Technical SEO",
 ];
 
 export default function TechStrip() {

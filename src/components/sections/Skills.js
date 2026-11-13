@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft, ArrowRight, Atom, Braces, Bug, ClipboardCheck, Code, Database, Flag, GitBranch,
   LayoutGrid, Layers, Leaf, Mail, MonitorSmartphone, Palette, Pause, Play, Plug, Search, Send,
-  Server, Sparkles, Webhook, Wind, Wrench,
+  Server, Smartphone, Sparkles, Webhook, Wind, Wrench,
 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
 import Reveal from "@/components/ui/Reveal";
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 const iconMap = {
   Code, Palette, Braces, Atom, Layers, Wind, LayoutGrid, Server, Plug, Mail, Database, Leaf,
   GitBranch, Github: GithubIcon, Send, Flag, Sparkles, ClipboardCheck, Search, Bug,
-  MonitorSmartphone, Webhook,
+  MonitorSmartphone, Smartphone, Webhook,
 };
 
 const categoryIcons = { frontend: Layers, backend: Server, database: Database, tools: Wrench, quality: ClipboardCheck };
