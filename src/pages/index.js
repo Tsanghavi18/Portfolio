@@ -10,6 +10,7 @@ import Education from "@/components/sections/Education";
 import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
 import BackToTop from "@/components/ui/BackToTop";
+import TechStrip from "@/components/ui/TechStrip";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { profile, socials } from "@/data/portfolio";
@@ -69,11 +70,12 @@ export default function Home() {
       <Navbar />
       <main id="main">
         <Hero />
+        <TechStrip />
         <About />
         <Skills />
         <Projects />
         <Experience />
-        <Section id="education" index="05" effect="slide-right">
+        <Section id="education" index="05" effect="slide-left">
           <SectionHeading caption="Learning" title="Education & Certifications." />
           <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
             <Education />

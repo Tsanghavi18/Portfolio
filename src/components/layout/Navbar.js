@@ -16,21 +16,53 @@ export default function Navbar() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.001 });
 
+  // Handle scroll events: navbar backdrop style and reliable active section tracking
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    let ticking = false;
 
-  // Highlight the link of the section currently in view
-  useEffect(() => {
-    const sections = navLinks.map((l) => document.getElementById(l.id)).filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && setActive(entry.target.id)),
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 12);
+
+          // 1. If at the very top of the page, activate "home"
+          if (window.scrollY < 100) {
+            setActive("home");
+            ticking = false;
+            return;
+          }
+
+          // 2. If scrolled near the bottom of the page, activate the last section ("contact")
+          if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60) {
+            setActive(navLinks[navLinks.length - 1].id);
+            ticking = false;
+            return;
+          }
+
+          // 3. Find which section is currently active based on viewport position
+          let currentSection = "home";
+          const threshold = 180; // 180px from top (below navbar)
+
+          for (const link of navLinks) {
+            const el = document.getElementById(link.id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= threshold) {
+                currentSection = link.id;
+              }
+            }
+          }
+
+          setActive(currentSection);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Mobile menu: close with Escape and lock page scroll while open
@@ -54,12 +86,19 @@ export default function Navbar() {
     >
       <div
         className={cn(
-          "relative mx-auto max-w-6xl overflow-hidden rounded-2xl transition-all duration-300",
-          scrolled || open ? "glass-strong" : "glass"
+          "relative mx-auto max-w-6xl rounded-2xl transition-[background-color,box-shadow] duration-300",
+          scrolled || open ? "nav-glass" : "nav-glass-top"
         )}
       >
         <div className="flex h-18 items-center justify-between px-3 sm:px-4">
-          <a href="#home" aria-label="Tarun Sanghavi, back to top" onClick={() => setOpen(false)}>
+          <a
+            href="#home"
+            aria-label="Tarun Sanghavi, back to top"
+            onClick={() => {
+              setActive("home");
+              setOpen(false);
+            }}
+          >
             <Logo />
           </a>
 
@@ -70,6 +109,7 @@ export default function Navbar() {
                 <li key={link.id}>
                   <a
                     href={`#${link.id}`}
+                    onClick={() => setActive(link.id)}
                     aria-current={active === link.id ? "page" : undefined}
                     className={cn(
                       "relative block rounded-xl px-4 py-2 text-sm font-medium transition-colors",
@@ -103,7 +143,7 @@ export default function Navbar() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => setOpen((v) => !v)}
-              className="glass inline-flex h-10 w-10 items-center justify-center rounded-xl"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-ink/[0.06]"
             >
               {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
@@ -133,7 +173,10 @@ export default function Navbar() {
                   >
                     <a
                       href={`#${link.id}`}
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        setActive(link.id);
+                        setOpen(false);
+                      }}
                       aria-current={active === link.id ? "page" : undefined}
                       className={cn(
                         "flex min-h-14 items-center font-display text-xl font-bold",
@@ -154,7 +197,7 @@ export default function Navbar() {
           )}
         </AnimatePresence>
 
-        <motion.div aria-hidden="true" style={{ scaleX: progress }} className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-gradient-to-r from-accent to-accent-2" />
+        <motion.div aria-hidden="true" style={{ scaleX: progress }} className="absolute inset-x-4 bottom-0 h-0.5 origin-left rounded-full bg-gradient-to-r from-accent to-accent-2" />
       </div>
     </motion.header>
   );

@@ -6,10 +6,10 @@ const ease = [0.22, 1, 0.36, 1];
 
 // The h2 itself is what scrolls into view (it is never clipped), and it tells
 // each word to rise from behind its mask in turn.
-const titleVariants = { hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.3 } } };
+const titleVariants = { hidden: {}, show: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } } };
 const wordVariants = {
   hidden: { y: "115%", opacity: 0 },
-  show: { y: 0, opacity: 1, transition: { duration: 0.8, ease } },
+  show: { y: 0, opacity: 1, transition: { duration: 0.6, ease } },
 };
 
 /** Caption pill + title (words rise from behind a mask) + optional description. */
@@ -21,7 +21,7 @@ export default function SectionHeading({ caption, title, description, className 
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.5, delay: 0.2, ease }}
+        transition={{ duration: 0.4, delay: 0.05, ease }}
         className="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium text-accent-strong"
       >
         <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -48,7 +48,7 @@ export default function SectionHeading({ caption, title, description, className 
       </motion.h2>
 
       {description && (
-        <Reveal delay={0.5}>
+        <Reveal delay={0.2}>
           <p className="mt-4 max-w-xl text-lg text-muted">{description}</p>
         </Reveal>
       )}

@@ -23,7 +23,7 @@ export const profile = {
   tagline: "Building better digital experiences, one project at a time.",
   siteUrl: "https://your-domain.com", // TODO: replace with your deployed URL
   email: "tarunn.sanghavi@gmail.com", // TODO: add your professional email address
-  resumeUrl: "/Tarun-Sanghavi-Resume.pdf", // TODO: put your resume PDF in /public with this name
+  resumeUrl: "/Tarun Sanghavi.pdf", // TODO: put your resume PDF in /public with this name
 };
 
 export const socials = {

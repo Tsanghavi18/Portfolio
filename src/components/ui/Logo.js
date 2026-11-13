@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 export function LogoMark({ className, decorative = false }) {
   return (
     <Image
-      src="/logo-mark.png"
-      width={332}
-      height={240}
+      src="/logo.png"
+      width={432}
+      height={440}
       alt={decorative ? "" : "Tarun Sanghavi logo"}
       priority
-      className={cn("h-10 w-auto shrink-0 rounded-lg ring-1 ring-white/15", className)}
+      className={cn("h-14 w-auto shrink-0 rounded-full ring-1 ring-line", className)}
     />
   );
 }

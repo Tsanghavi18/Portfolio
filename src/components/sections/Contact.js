@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Check, Info, LoaderCircle, Mail, MessageSquare, Send, User } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
@@ -11,11 +12,14 @@ import { contact, profile, socials } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const namePattern = /^[\p{L}\p{M}][\p{L}\p{M} .'’-]{1,59}$/u;
+// Optional Cloudflare Turnstile captcha: turns on when this key is set (see .env.example)
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const MAX_MESSAGE = 600;
 
 function validate(values) {
   const errors = {};
-  if (values.name.trim().length < 2) errors.name = "Enter your name (at least 2 characters).";
+  if (!namePattern.test(values.name.trim())) errors.name = "Enter your real name (letters only, at least 2 characters).";
   if (!emailPattern.test(values.email.trim())) errors.email = "Enter a valid email address, like name@example.com.";
   if (values.message.trim().length < 10) errors.message = "Write a message of at least 10 characters.";
   return errors;
@@ -24,8 +28,8 @@ function validate(values) {
 /** Input with an icon and a floating label. */
 function Field({ id, label, icon: Icon, error, multiline, rows = 5, ...props }) {
   const shared = cn(
-    "peer w-full rounded-xl border bg-white/[0.04] pb-2.5 pl-12 pr-4 pt-6 text-ink outline-none transition-colors placeholder-transparent",
-    "focus:border-accent focus:bg-white/[0.07]",
+    "peer w-full rounded-xl border bg-ink/[0.04] pb-2.5 pl-12 pr-4 pt-6 text-ink outline-none transition-colors placeholder-transparent",
+    "focus:border-accent focus:bg-ink/[0.07]",
     error ? "border-accent-2" : "border-[var(--glass-border)]"
   );
   const label_ = cn(
@@ -68,6 +72,12 @@ export default function Contact() {
   const [state, setState] = useState("idle"); // idle | sending | done | error
   const [trap, setTrap] = useState(""); // hidden spam-trap field
   const [note, setNote] = useState("");
+  const [autoReply, setAutoReply] = useState(true);
+  const startedAt = useRef(0); // when the visitor first saw the form (bots submit instantly)
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   const links = [
     { label: "LinkedIn", value: "tarun-sanghavi", href: socials.linkedin, Icon: LinkedinIcon },
@@ -93,6 +103,8 @@ export default function Contact() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const turnstileToken = formData.get("cf-turnstile-response") || "";
     const found = validate(values);
     setErrors(found);
     if (Object.keys(found).length > 0) {
@@ -107,11 +119,13 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, website: trap }),
+        body: JSON.stringify({ ...values, website: trap, elapsed: Date.now() - startedAt.current, turnstileToken }),
       });
       const data = await res.json().catch(() => ({}));
 
       if (res.ok && data.ok) {
+        setAutoReply(Boolean(data.autoReply));
+        window.turnstile?.reset?.();
         setState("done");
         setNote("Thank you! Your message has been sent. I will get back to you soon.");
         setValues({ name: "", email: "", message: "" });
@@ -121,6 +135,7 @@ export default function Contact() {
         openMailApp();
         return;
       }
+      window.turnstile?.reset?.();
       setState("error");
       setNote(data.error || "Something went wrong. Please try again or reach out on LinkedIn.");
     } catch {
@@ -134,7 +149,7 @@ export default function Contact() {
   }
 
   return (
-    <Section id="contact" index="06" effect="clip">
+    <Section id="contact" index="06" effect="rise">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
         {/* Info */}
         <div className="min-w-0 lg:col-span-5">
@@ -232,7 +247,7 @@ export default function Contact() {
                         <div>
                           <p className="font-semibold text-ink text-base">Message Sent Successfully!</p>
                           <p className="text-xs sm:text-sm text-muted">
-                            A confirmation email has been sent to you. I will get back to you soon.
+                            {autoReply ? "A confirmation email has been sent to you. I will get back to you soon." : "I will get back to you soon."}
                           </p>
                         </div>
                       </div>
@@ -249,7 +264,13 @@ export default function Contact() {
                     </div>
                   </motion.div>
                 ) : (
-                  <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+                    {turnstileSiteKey && (
+                      <>
+                        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload" />
+                        <div className="cf-turnstile sm:basis-full" data-sitekey={turnstileSiteKey} data-theme="auto" />
+                      </>
+                    )}
                     <motion.button
                       type="submit"
                       disabled={state === "sending"}

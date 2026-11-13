@@ -1,8 +1,8 @@
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Atom, Briefcase, Download, MonitorSmartphone } from "lucide-react";
 import Button from "@/components/ui/Button";
 import SocialLinks from "@/components/ui/SocialLinks";
-import { LogoMark } from "@/components/ui/Logo";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ const icons = { Briefcase, Atom, MonitorSmartphone };
 const headlineWords = profile.headline.split(" ");
 const accentWords = (profile.headlineAccent || "").split(" ");
 
-// Floating stack chips around the logo card
+// Floating stack chips around the card
 const chips = [
   { label: "React.js", pos: "-left-4 top-10", delay: 1.4 },
   { label: "Next.js", pos: "-right-4 top-24", delay: 1.55 },
@@ -21,11 +21,19 @@ const chips = [
   { label: "MySQL", pos: "-right-2 bottom-12", delay: 1.85 },
 ];
 
-const facts = [
-  ["Role", "Full Stack Developer"],
-  ["Focus", "Frontend Development"],
-  ["Company", "AzzipTech"],
+// Code card shown in the hero (uses fixed editor colors so it looks the same in both themes)
+const codeLines = [
+  [["const ", "kw"], ["tarun", "key"], [" = {", "p"]],
+  [["  role", "key"], [": ", "p"], ['"Full Stack Developer"', "str"], [",", "p"]],
+  [["  focus", "key"], [": ", "p"], ['"Frontend Development"', "str"], [",", "p"]],
+  [["  stack", "key"], [": [", "p"], ['"React.js"', "str"], [", ", "p"], ['"Next.js"', "str"], [", ", "p"], ['"Node.js"', "str"], ["],", "p"]],
+  [["  company", "key"], [": ", "p"], ['"AzzipTech"', "str"], [",", "p"]],
+  [["  openTo", "key"], [": [", "p"], ['"Part-Time"', "str"], [", ", "p"], ['"Freelance"', "str"], ["],", "p"]],
+  [["};", "p"]],
 ];
+const colorFor = { kw: "text-[#f5b53d]", key: "text-[#ebe8e1]", str: "text-[#7cc4ff]", p: "text-white/45" };
+const codeContainer = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 1.1 } } };
+const codeLine = { hidden: { opacity: 0, x: -8 }, show: { opacity: 1, x: 0, transition: { duration: 0.35 } } };
 
 export default function Hero() {
   return (
@@ -133,7 +141,7 @@ export default function Hero() {
           </motion.ul>
         </div>
 
-        {/* ---------- Visual: glass logo card (hidden on small phones to keep the hero compact) ---------- */}
+        {/* ---------- Visual: glass profile card (hidden on small phones to keep the hero compact) ---------- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.94, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -141,15 +149,52 @@ export default function Hero() {
           className="relative mx-auto hidden w-full max-w-sm md:block lg:col-span-5 lg:max-w-md"
         >
           <div className="glass-strong rounded-[2rem] p-5">
-            <LogoMark className="h-auto w-full rounded-2xl" />
-            <dl className="mt-4 space-y-2">
-              {facts.map(([k, v]) => (
-                <div key={k} className="flex items-center justify-between rounded-xl bg-white/[0.05] px-4 py-2.5 text-sm ring-1 ring-white/5">
-                  <dt className="font-mono text-xs text-muted">{k}</dt>
-                  <dd className="font-medium">{v}</dd>
-                </div>
-              ))}
-            </dl>
+            {/* Optional photo: add `photo: "/your-photo.jpg"` to profile in portfolio.js */}
+            {profile.photo && (
+              <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-line">
+                <Image
+                  src={profile.photo}
+                  alt={`Portrait of ${profile.name}`}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 28rem, 24rem"
+                  className="object-cover"
+                />
+              </div>
+            )}
+
+            <div className="overflow-hidden rounded-2xl bg-[#0b0f18] text-white ring-1 ring-white/10">
+              <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
+                <span className="h-2.5 w-2.5 rounded-full bg-white/25" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#f5b53d]" />
+                <span className="ml-3 font-mono text-xs text-white/45">tarun.js</span>
+              </div>
+              <motion.pre
+                variants={codeContainer}
+                initial="hidden"
+                animate="show"
+                className="overflow-x-auto p-4 font-mono text-xs leading-7 sm:p-5"
+                aria-label="Code summary of my profile"
+              >
+                <code className="block">
+                  {codeLines.map((line, i) => (
+                    <motion.span key={i} variants={codeLine} className="flex">
+                      <span aria-hidden="true" className="w-6 shrink-0 select-none text-white/25">{i + 1}</span>
+                      <span className="whitespace-pre">
+                        {line.map(([text, role], j) => (
+                          <span key={j} className={colorFor[role]}>{text}</span>
+                        ))}
+                        {i === codeLines.length - 1 && (
+                          <span aria-hidden="true" className="animate-blink ml-1 inline-block h-4 w-1.5 translate-y-0.5 bg-[#f5b53d]" />
+                        )}
+                      </span>
+                    </motion.span>
+                  ))}
+                </code>
+              </motion.pre>
+            </div>
+
             <SocialLinks className="mt-4 justify-center" />
           </div>
 

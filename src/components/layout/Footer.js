@@ -33,7 +33,7 @@ export default function Footer() {
         {/* Link columns */}
         <div className="mt-14 grid grid-cols-1 gap-12 md:grid-cols-12">
           <Reveal className="min-w-0 md:col-span-5">
-            <Logo showName />
+            <Logo />
             <p className="mt-5 max-w-sm text-muted">
               {profile.role} building responsive, user-friendly web applications.
             </p>

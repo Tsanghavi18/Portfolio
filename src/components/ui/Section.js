@@ -6,15 +6,10 @@ const ease = [0.22, 1, 0.36, 1];
 // Each section opens with its own effect. (clip-path and opacity also play for
 // visitors who prefer reduced motion; only the sliding/scaling is removed for them.)
 const effects = {
-  rise: { hidden: { opacity: 0, y: 90 }, show: { opacity: 1, y: 0 } },
-  scale: { hidden: { opacity: 0, scale: 0.9, y: 50 }, show: { opacity: 1, scale: 1, y: 0 } },
-  "slide-left": { hidden: { opacity: 0, x: -130 }, show: { opacity: 1, x: 0 } },
-  "slide-right": { hidden: { opacity: 0, x: 130 }, show: { opacity: 1, x: 0 } },
-  // card-like window that opens up to full width
-  clip: {
-    hidden: { opacity: 0, clipPath: "inset(14% 7% 14% 7% round 44px)" },
-    show: { opacity: 1, clipPath: "inset(-20% -10% -20% -10% round 0px)" },
-  },
+  rise: { hidden: { opacity: 0, y: 44 }, show: { opacity: 1, y: 0 } },
+  scale: { hidden: { opacity: 0, scale: 0.95, y: 24 }, show: { opacity: 1, scale: 1, y: 0 } },
+  "slide-left": { hidden: { opacity: 0, x: -64 }, show: { opacity: 1, x: 0 } },
+  "slide-right": { hidden: { opacity: 0, x: 64 }, show: { opacity: 1, x: 0 } },
 };
 
 /**
@@ -32,7 +27,7 @@ export default function Section({ id, index, effect = "rise", className, childre
               initial={{ opacity: 0, scale: 0.6 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.6, ease }}
+              transition={{ duration: 0.4, ease }}
               className="glass flex h-10 min-w-10 items-center justify-center rounded-xl px-2 font-mono text-sm font-semibold text-accent-strong"
             >
               {index}
@@ -41,7 +36,7 @@ export default function Section({ id, index, effect = "rise", className, childre
               initial={{ clipPath: "inset(0 100% 0 0)" }}
               whileInView={{ clipPath: "inset(0 0% 0 0)" }}
               viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 1.1, delay: 0.15, ease }}
+              transition={{ duration: 0.8, delay: 0.1, ease }}
               className="h-px flex-1 bg-gradient-to-r from-accent via-accent-2/60 to-transparent"
             />
           </div>
@@ -52,7 +47,7 @@ export default function Section({ id, index, effect = "rise", className, childre
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.06 }}
-          transition={{ duration: 1, delay: 0.1, ease }}
+          transition={{ duration: 0.7, ease }}
         >
           {children}
         </motion.div>

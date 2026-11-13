@@ -30,7 +30,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="glass inline-flex h-10 w-10 items-center justify-center rounded-xl text-ink transition-colors hover:border-accent/60 hover:text-accent-strong"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--glass-border)] bg-ink/[0.06] text-ink transition-colors hover:border-accent/60 hover:text-accent-strong"
     >
       {isDark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
     </button>

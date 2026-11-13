@@ -18,7 +18,7 @@ export default function Experience() {
   const path = [...experience].reverse();
 
   return (
-    <Section id="experience" index="04" effect="clip">
+    <Section id="experience" index="04" effect="slide-right">
       <SectionHeading caption="Professional journey" title="Where I have grown." />
 
       {/* Company widget */}
