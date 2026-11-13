@@ -4,8 +4,8 @@ import { useInView } from "framer-motion";
 // A slow, calm strip of core technologies. It only moves while it is on screen,
 // pauses on hover, and stays still for reduced-motion visitors.
 const items = [
-  "React.js", "Next.js", "JavaScript", "Tailwind CSS", "Node.js", "MySQL",
-  "MongoDB", "Git", "GitHub", "Postman", "Jira", "Technical SEO",
+  "React.js", "Next.js", "JavaScript", "Tailwind CSS", "React Native", "Node.js",
+  "MySQL", "MongoDB", "Firebase", "Technical SEO", "Git", "GitHub", "Postman", "Jira",
 ];
 
 export default function TechStrip() {

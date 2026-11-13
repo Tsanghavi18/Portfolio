@@ -6,7 +6,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import Reveal from "@/components/ui/Reveal";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { GithubIcon, InstagramIcon, LinkedinIcon } from "@/components/ui/Icons";
 import SocialLinks from "@/components/ui/SocialLinks";
 import { contact, profile, socials } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
@@ -82,6 +82,7 @@ export default function Contact() {
   const links = [
     { label: "LinkedIn", value: "tarun-sanghavi", href: socials.linkedin, Icon: LinkedinIcon },
     { label: "GitHub", value: "Tsanghavi18", href: socials.github, Icon: GithubIcon },
+    ...(socials.instagram ? [{ label: "Instagram", value: "@tarunn.sanghavi", href: socials.instagram, Icon: InstagramIcon }] : []),
     // Shown only once you add `email` in portfolio.js
     ...(profile.email ? [{ label: "Email", value: profile.email, href: `mailto:${profile.email}`, Icon: Mail }] : []),
   ];

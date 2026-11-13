@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowLeft, ArrowRight, Atom, Braces, Bug, ClipboardCheck, Code, Database, Flag, GitBranch,
+  ArrowLeft, ArrowRight, Atom, Braces, Bug, ClipboardCheck, Code, Database, Flag, Flame, GitBranch,
   LayoutGrid, Layers, Leaf, Mail, MonitorSmartphone, Palette, Pause, Play, Plug, Search, Send,
   Server, Smartphone, Sparkles, Webhook, Wind, Wrench,
 } from "lucide-react";
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 const iconMap = {
   Code, Palette, Braces, Atom, Layers, Wind, LayoutGrid, Server, Plug, Mail, Database, Leaf,
   GitBranch, Github: GithubIcon, Send, Flag, Sparkles, ClipboardCheck, Search, Bug,
-  MonitorSmartphone, Smartphone, Webhook,
+  MonitorSmartphone, Smartphone, Webhook, Flame,
 };
 
 const categoryIcons = { frontend: Layers, backend: Server, database: Database, tools: Wrench, quality: ClipboardCheck };
