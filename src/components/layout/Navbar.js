@@ -77,6 +77,33 @@ export default function Navbar() {
     };
   }, [open]);
 
+  // Handle mobile navigation click: unlock body scroll, close menu, and scroll accurately
+  const handleMobileNavClick = (e, id) => {
+    e.preventDefault();
+    setActive(id);
+    document.body.style.overflow = "";
+    setOpen(false);
+
+    if (id === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        const navHeight = 88;
+        const elementPosition = el.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - navHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    }, 60);
+  };
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -94,9 +121,12 @@ export default function Navbar() {
           <a
             href="#home"
             aria-label="Tarun Sanghavi, back to top"
-            onClick={() => {
-              setActive("home");
-              setOpen(false);
+            onClick={(e) => {
+              if (open) {
+                handleMobileNavClick(e, "home");
+              } else {
+                setActive("home");
+              }
             }}
           >
             <Logo />
@@ -173,10 +203,7 @@ export default function Navbar() {
                   >
                     <a
                       href={`#${link.id}`}
-                      onClick={() => {
-                        setActive(link.id);
-                        setOpen(false);
-                      }}
+                      onClick={(e) => handleMobileNavClick(e, link.id)}
                       aria-current={active === link.id ? "page" : undefined}
                       className={cn(
                         "flex min-h-14 items-center font-display text-xl font-bold",
