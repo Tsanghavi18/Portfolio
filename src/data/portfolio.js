@@ -8,6 +8,7 @@ export const profile = {
   name: "Tarun Sanghavi",
   shortName: "Tarun",
   role: "Full Stack Developer",
+  // photo: "/logo.png",
   availability: "Available for Part-Time Roles & Freelance Projects",
   headline: "Crafting Scalable, High-Impact Web Experiences.",
   headlineAccent: "High-Impact Web Experiences.",
@@ -21,7 +22,7 @@ export const profile = {
     { icon: "MonitorSmartphone", text: "Focused on UI quality and responsive development" },
   ],
   tagline: "Building better digital experiences, one project at a time.",
-  siteUrl: "https://your-domain.com", // TODO: replace with your deployed URL
+  siteUrl: "https://tarunportfolio-lac.vercel.app", // TODO: replace with your deployed URL
   email: "tarunn.sanghavi@gmail.com", // TODO: add your professional email address
   resumeUrl: "/Tarun Sanghavi.pdf", // TODO: put your resume PDF in /public with this name
 };
